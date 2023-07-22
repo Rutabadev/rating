@@ -9,10 +9,7 @@
 </script>
 
 {#if ratings.every((rating) => !!rating)}
-	<div
-		transition:fly={{ y: 37, opacity: 0, duration: 700 }}
-		class={$$props.class + ' text-center '}
-	>
+	<div transition:fly={{ y: 37, opacity: 0, duration: 700 }} class={$$props.class + ' text-center'}>
 		<p class="py-4 text-2xl capitalize">
 			Total ({total.toFixed(1)})
 		</p>
@@ -24,7 +21,7 @@
 		`}
 		>
 			{#each Array.from({ length: 5 }) as _, i}
-				<span>
+				<span transition:fly|global={{ y: 37, duration: 700, delay: 100 * i }}>
 					<Star
 						percentage={i <= Math.floor(total - 1)
 							? 100

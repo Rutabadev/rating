@@ -1,6 +1,6 @@
 <script>
 	import Star from './Star.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -10,6 +10,19 @@
 	/** @type {number | undefined} */
 	let selectedIndex;
 	let jump = false;
+
+	/**
+	 * @param {number | undefined} selectedIndex
+	 * @param {number} i
+	 */
+	function getColor(selectedIndex, i) {
+		if (selectedIndex === 0 && i <= selectedIndex) return '[--fill-color:theme(colors.red.400)]';
+		if (selectedIndex === 1 && i <= selectedIndex) return '[--fill-color:theme(colors.orange.400)]';
+		if (selectedIndex && selectedIndex > 1 && i <= selectedIndex)
+			return '[--fill-color:theme(colors.yellow.400)]';
+		if (hoveredIndex && i <= hoveredIndex) return '[--fill-color:theme(colors.yellow.400/50%)]';
+		return '[--fill-color:theme(colors.gray.50)]';
+	}
 </script>
 
 <div class="text-center">
@@ -17,23 +30,13 @@
 	<div class="flex justify-center" on:mouseleave={() => (hoveredIndex = undefined)} role="group">
 		{#each Array.from({ length: 5 }) as _, i}
 			<button
-				class={`
-					group
-					${selectedIndex === 0 && i <= selectedIndex ? '![--fill-color:theme(colors.red.400)]' : ''}
-					${selectedIndex === 1 && i <= selectedIndex ? '![--fill-color:theme(colors.orange.400)]' : ''}
-					${
-						selectedIndex && selectedIndex > 1 && i <= selectedIndex
-							? '![--fill-color:theme(colors.yellow.400)]'
-							: ''
-					}
-					${hoveredIndex && i <= hoveredIndex ? '[--fill-color:theme(colors.yellow.400/50%)]' : ''}
-				`}
+				class={`group ${getColor(selectedIndex, i)}`}
 				class:jump={jump && selectedIndex && selectedIndex >= i}
 				style="animation-delay: {i * 100}ms"
 				on:mouseenter={() => (hoveredIndex = i)}
-				on:click={() => {
-					jump = true;
-					// jump = false;
+				on:click={async () => {
+					jump = false;
+					setTimeout(() => (jump = true));
 					if (selectedIndex === i) {
 						selectedIndex = undefined;
 						dispatch('rating', undefined);
