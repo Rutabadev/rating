@@ -1,18 +1,20 @@
 <script>
 	import Star from './Star.svelte';
-	import { createEventDispatcher, tick } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 
 	export let criteria = 'Criteria';
 	/** @type {number | undefined} */
 	let hoveredIndex;
-	/** @type {number | undefined} */
+	/** @type {number | undefined | null} */
 	let selectedIndex;
-	let jump = false;
+	/** @type {number | undefined | null} */
+	let lastSelectedIndex;
+	let triggerAnimations = false;
 
 	/**
-	 * @param {number | undefined} selectedIndex
+	 * @param {number | undefined | null} selectedIndex
 	 * @param {number | undefined} hoveredIndex
 	 * @param {number} i
 	 */
@@ -24,6 +26,34 @@
 		if (hoveredIndex && i <= hoveredIndex) return '[--fill-color:theme(colors.yellow.400/50%)]';
 		return '[--fill-color:theme(colors.gray.50)]';
 	}
+
+	/**
+	 * @param {number | undefined | null} selectedIndex
+	 * @param {number} i
+	 */
+	function shouldJump(selectedIndex, i) {
+		return (selectedIndex || selectedIndex === 0) && i <= selectedIndex;
+	}
+
+	/**
+	 * @param {number | undefined | null} selectedIndex
+	 * @param {number | undefined | null} lastSelectedIndex
+	 * @param {number} i
+	 */
+	function shouldWiggle(selectedIndex, lastSelectedIndex, i) {
+		// deselect criteria
+		if (selectedIndex === null) return true;
+		// select criteria lower than selected
+		if (
+			(!!selectedIndex || selectedIndex === 0) &&
+			!!lastSelectedIndex &&
+			selectedIndex < lastSelectedIndex &&
+			i > selectedIndex &&
+			i <= lastSelectedIndex
+		)
+			return true;
+		return false;
+	}
 </script>
 
 <div class="text-center">
@@ -32,17 +62,21 @@
 		{#each Array.from({ length: 5 }) as _, i}
 			<button
 				class={`group ${getColor(selectedIndex, hoveredIndex, i)}`}
-				class:jump={jump && selectedIndex !== undefined && selectedIndex >= i}
+				class:jump={triggerAnimations && shouldJump(selectedIndex, i)}
 				style="animation-delay: {i * 100}ms"
+				class:wiggle={triggerAnimations && shouldWiggle(selectedIndex, lastSelectedIndex, i)}
 				on:mouseenter={() => (hoveredIndex = i)}
 				on:click={async () => {
-					jump = false;
-					setTimeout(() => (jump = true));
+					// remove the animtion classes
+					triggerAnimations = false;
+					// re compute wich animation to play
+					setTimeout(() => (triggerAnimations = true));
 					if (selectedIndex === i) {
-						selectedIndex = undefined;
+						selectedIndex = null;
 						dispatch('rating', undefined);
 						return;
 					}
+					lastSelectedIndex = selectedIndex;
 					selectedIndex = i;
 					dispatch('rating', i + 1);
 				}}
@@ -68,5 +102,28 @@
 
 	.jump {
 		animation: jump 0.5s ease-in-out;
+	}
+
+	@keyframes wiggle {
+		0% {
+			transform: translateX(0);
+		}
+		25% {
+			transform: translateX(-3px) rotate(-1deg);
+		}
+		50% {
+			transform: translateX(3px) rotate(1deg);
+		}
+		75% {
+			transform: translateX(-3px) rotate(-1deg);
+		}
+		100% {
+			transform: translateX(0);
+		}
+	}
+
+	.wiggle {
+		animation: wiggle 0.3s ease-in-out;
+		animation-delay: 0ms; /* override delay from jump */
 	}
 </style>
