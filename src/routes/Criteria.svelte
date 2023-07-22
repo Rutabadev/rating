@@ -17,6 +17,7 @@
 		{#each Array.from({ length: 5 }) as _, i}
 			<button
 				class={`
+					transition-transform hover:scale-125
 					${selectedIndex === 0 && i <= selectedIndex ? '![--fill-color:theme(colors.red.400)]' : ''}
 					${selectedIndex === 1 && i <= selectedIndex ? '![--fill-color:theme(colors.orange.400)]' : ''}
 					${

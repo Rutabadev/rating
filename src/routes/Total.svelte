@@ -16,16 +16,22 @@
 		<p class="py-4 text-2xl capitalize">
 			Total ({total.toFixed(1)})
 		</p>
-		<div class="flex justify-center">
+		<div
+			class={`flex justify-center
+			${total < 2 ? '[--fill-color:theme(colors.red.400)]' : ''}
+			${total < 3 ? '[--fill-color:theme(colors.orange.400)]' : ''}
+			${total >= 3 ? '[--fill-color:theme(colors.yellow.400)]' : ''}
+		`}
+		>
 			{#each Array.from({ length: 5 }) as _, i}
-				<span
-					class={`
-						${total < 2 && i <= total ? '[--fill-color:theme(colors.red.400)]' : ''}
-						${total < 3 && i <= total ? '[--fill-color:theme(colors.orange.400)]' : ''}
-						${total >= 3 && i <= total ? '[--fill-color:theme(colors.yellow.400)]' : ''}
-				`}
-				>
-					<Star percentage={i <= Math.floor(total - 1) ? 100 : (total % 1) * 100} />
+				<span>
+					<Star
+						percentage={i <= Math.floor(total - 1)
+							? 100
+							: i > Math.floor(total)
+							? 0
+							: (total % 1) * 100}
+					/>
 				</span>
 			{/each}
 		</div>
