@@ -9,6 +9,7 @@
 	let hoveredIndex;
 	/** @type {number | undefined} */
 	let selectedIndex;
+	let jump = false;
 </script>
 
 <div class="text-center">
@@ -17,7 +18,7 @@
 		{#each Array.from({ length: 5 }) as _, i}
 			<button
 				class={`
-					transition-transform hover:scale-125
+					group
 					${selectedIndex === 0 && i <= selectedIndex ? '![--fill-color:theme(colors.red.400)]' : ''}
 					${selectedIndex === 1 && i <= selectedIndex ? '![--fill-color:theme(colors.orange.400)]' : ''}
 					${
@@ -27,8 +28,12 @@
 					}
 					${hoveredIndex && i <= hoveredIndex ? '[--fill-color:theme(colors.yellow.400/50%)]' : ''}
 				`}
+				class:jump={jump && selectedIndex && selectedIndex >= i}
+				style="animation-delay: {i * 100}ms"
 				on:mouseenter={() => (hoveredIndex = i)}
 				on:click={() => {
+					jump = true;
+					// jump = false;
 					if (selectedIndex === i) {
 						selectedIndex = undefined;
 						dispatch('rating', undefined);
@@ -38,8 +43,26 @@
 					dispatch('rating', i + 1);
 				}}
 			>
-				<Star />
+				<Star class="transition-transform group-hover:scale-125 " />
 			</button>
 		{/each}
 	</div>
 </div>
+
+<style lang="postcss">
+	@keyframes jump {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-0.5rem);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+
+	.jump {
+		animation: jump 0.5s ease-in-out;
+	}
+</style>
