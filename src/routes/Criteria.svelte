@@ -13,9 +13,10 @@
 
 	/**
 	 * @param {number | undefined} selectedIndex
+	 * @param {number | undefined} hoveredIndex
 	 * @param {number} i
 	 */
-	function getColor(selectedIndex, i) {
+	function getColor(selectedIndex, hoveredIndex, i) {
 		if (selectedIndex === 0 && i <= selectedIndex) return '[--fill-color:theme(colors.red.400)]';
 		if (selectedIndex === 1 && i <= selectedIndex) return '[--fill-color:theme(colors.orange.400)]';
 		if (selectedIndex && selectedIndex > 1 && i <= selectedIndex)
@@ -30,8 +31,8 @@
 	<div class="flex justify-center" on:mouseleave={() => (hoveredIndex = undefined)} role="group">
 		{#each Array.from({ length: 5 }) as _, i}
 			<button
-				class={`group ${getColor(selectedIndex, i)}`}
-				class:jump={jump && selectedIndex && selectedIndex >= i}
+				class={`group ${getColor(selectedIndex, hoveredIndex, i)}`}
+				class:jump={jump && selectedIndex !== undefined && selectedIndex >= i}
 				style="animation-delay: {i * 100}ms"
 				on:mouseenter={() => (hoveredIndex = i)}
 				on:click={async () => {
