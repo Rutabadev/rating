@@ -8,7 +8,7 @@
 </script>
 
 <main
-	class="mx-auto mt-24 grid max-w-2xl grid-cols-2 place-content-center gap-6 px-10 font-serif font-extrabold tracking-[-0.12em]"
+	class="mx-auto mt-24 grid max-w-2xl grid-cols-2 place-content-center gap-6 px-10 tracking-tighter [font-family:Futura]"
 >
 	{#each criterias as criteria, i}
 		<Criteria on:rating={(event) => (ratings[i] = event.detail)} {criteria} />
