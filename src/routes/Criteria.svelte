@@ -124,6 +124,5 @@
 
 	.wiggle {
 		animation: wiggle 0.3s ease-in-out;
-		animation-delay: 0ms; /* override delay from jump */
 	}
 </style>
