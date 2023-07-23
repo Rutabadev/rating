@@ -1,5 +1,6 @@
 <script>
 	import Criteria from './Criteria.svelte';
+	import SvgInjection from './SvgInjection.svelte';
 	import Total from './Total.svelte';
 
 	const criterias = ['design', 'fonctionnement', 'animations', 'feeling general'];
@@ -14,4 +15,5 @@
 		<Criteria on:rating={(event) => (ratings[i] = event.detail)} {criteria} />
 	{/each}
 	<Total {ratings} class="col-span-2" />
+	<SvgInjection />
 </main>
