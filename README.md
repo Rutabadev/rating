@@ -2,6 +2,8 @@
 
 A replica of the rating app by Benjamin Code shown in this video : https://youtu.be/s8lIDkjqt_s.
 
+![rating-app](./rating-app.gif)
+
 ## Specifications
 
 - [x] 4 criterias (design, fonctionnement, animations, feeling general) with a rating from 1 to 5 stars
