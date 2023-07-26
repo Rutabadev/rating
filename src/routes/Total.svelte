@@ -21,7 +21,7 @@
 		`}
 		>
 			{#each Array.from({ length: 5 }) as _, i}
-				<span transition:fly|global={{ y: 37, duration: 700, delay: 100 * i }}>
+				<span in:fly|global={{ y: 37, duration: 700, delay: 100 * i }}>
 					<Star
 						percentage={i <= Math.floor(total - 1)
 							? 100
