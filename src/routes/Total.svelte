@@ -1,4 +1,5 @@
 <script>
+	import { cubicIn, cubicOut } from 'svelte/easing';
 	import Star from './Star.svelte';
 
 	import { fly } from 'svelte/transition';
@@ -9,8 +10,12 @@
 </script>
 
 {#if ratings.every((rating) => !!rating)}
-	<div transition:fly={{ y: 37, opacity: 0, duration: 700 }} class={$$props.class + ' text-center'}>
-		<p class="py-4 text-2xl capitalize">
+	<div class={$$props.class + ' text-center'}>
+		<p
+			in:fly={{ y: 37, opacity: 0, duration: 500, easing: cubicOut }}
+			out:fly={{ y: 37, opacity: 0, delay: 300, duration: 500, easing: cubicIn }}
+			class="py-4 text-2xl capitalize"
+		>
 			Total ({total.toFixed(1)})
 		</p>
 		<div
@@ -21,7 +26,10 @@
 		`}
 		>
 			{#each Array.from({ length: 5 }) as _, i}
-				<span in:fly|global={{ y: 37, duration: 700, delay: 100 * i }}>
+				<span
+					in:fly|global={{ y: 37, duration: 500, delay: 100 * i, easing: cubicOut }}
+					out:fly|global={{ y: 37, duration: 500, delay: 100 * i, easing: cubicIn }}
+				>
 					<Star
 						percentage={i <= Math.floor(total - 1)
 							? 100
