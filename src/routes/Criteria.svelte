@@ -23,7 +23,8 @@
 		if (selectedIndex === 1 && i <= selectedIndex) return '[--fill-color:theme(colors.orange.400)]';
 		if (selectedIndex && selectedIndex > 1 && i <= selectedIndex)
 			return '[--fill-color:theme(colors.yellow.400)]';
-		if (hoveredIndex && i <= hoveredIndex) return '[--fill-color:theme(colors.yellow.400/50%)]';
+		if (hoveredIndex !== undefined && i <= hoveredIndex)
+			return '[--fill-color:theme(colors.yellow.400/50%)]';
 		return '[--fill-color:theme(colors.gray.50)]';
 	}
 
