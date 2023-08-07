@@ -1,8 +1,8 @@
 <script>
 	import { cubicIn, cubicOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 	import Star from './Star.svelte';
 
-	import { fly } from 'svelte/transition';
 	/** @type {number[]}*/
 	export let ratings;
 

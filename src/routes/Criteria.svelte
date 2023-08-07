@@ -1,6 +1,6 @@
 <script>
-	import Star from './Star.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import Star from './Star.svelte';
 
 	const dispatch = createEventDispatcher();
 
