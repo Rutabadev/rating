@@ -7,6 +7,9 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Futura', 'Josefin Sans', ...defaultTheme.fontFamily.serif]
+			},
+			transitionTimingFunction: {
+				overshoot: 'cubic-bezier(0.5, 0, 0.25, 2)'
 			}
 		}
 	},

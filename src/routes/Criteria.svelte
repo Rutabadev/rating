@@ -82,7 +82,7 @@
 					dispatch('rating', i + 1);
 				}}
 			>
-				<Star class="transition-transform group-hover:scale-125 " />
+				<Star class="ease-overshoot transition-transform duration-300 group-hover:scale-125" />
 			</button>
 		{/each}
 	</div>
